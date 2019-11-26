@@ -1,6 +1,4 @@
 const jwt = require('jsonwebtoken');
-
-
 // ======================
 // Verificar Token
 // ======================
@@ -18,12 +16,8 @@ let verificatoken = (req, res, next) => {
         }
         req.usuario = decoded.usuario;
         next();
-
     });
-
-
 };
-
 // ======================
 // Verifica admin ROLE
 // ======================
@@ -44,7 +38,30 @@ let verificaAdmin_Role = (req, res, next) => {
     }
 
 }
+
+// ======================
+// Verificar Token para imagen
+// ======================
+let verificatokenimg = (req, res, next) => {
+
+    let token = req.query.token;
+
+    jwt.verify(token, process.env.SEED, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({
+                ok: false,
+                err: {
+                    message: 'token no valido'
+                }
+            });
+        }
+        req.usuario = decoded.usuario;
+        next();
+    });
+
+}
 module.exports = {
     verificatoken,
-    verificaAdmin_Role
+    verificaAdmin_Role,
+    verificatokenimg
 }
